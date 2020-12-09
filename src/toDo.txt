@@ -1,0 +1,2 @@
+Wyszukuje książki - po wyszukaniu wyświetla tylko tytuł i obrazek, na który można kliknąć
+i za pomocą React Router, zostaniemy przekierowani do szczegółów na temat danej książki

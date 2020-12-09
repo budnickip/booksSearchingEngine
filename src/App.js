@@ -1,56 +1,50 @@
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 
 function App() {
+  const [books, setBooks] = useState('')
+  const [name, setName] = useState('')
+  const [draft, setDraft] = useState('')
+  const [searched, setSearched] = useState(false)
   useEffect(()=>{
-    const form = document.querySelector(".search-form");
-    const input = document.querySelector("#search");
-
-    form.addEventListener("submit", e => {
-        e.preventDefault();
-        loadBooks(input.value);
-    })
-  })
-  const fetchData = async (name) => {
-    var books2 = []
-    await fetch(`https://www.googleapis.com/books/v1/volumes?q=${name}`)
-    .then(response =>{
+    if(name){
+      fetch(`https://www.googleapis.com/books/v1/volumes?q=${name}`)
+      .then(response =>{
         if(response.ok){
             return response.json()
         } else {
             return Promise.reject(response)
         }
-    })
-    .then(response => {
-        books2 = response.items
-    })
-    .catch(error => {
+       })
+      .then((result) => {
+        setBooks(result.items)
+      })
+      .catch(error => {
         console.error("Błąd pobrania API!")
-        books2 = false;
-    })
-    console.log(books2)
-    return books2
-}
-const loadBooks = async (name) => {
-  const books = await fetchData(name)
-  var booksOnSite = document.querySelector('.ksiazki')
-  var booksToAdd = ""
-  console.log("przed wejsciem do books")
-  if(books) {
-      console.log(books[1].volumeInfo)
-      books.map(item=>booksToAdd = booksToAdd + "<div>" + item.volumeInfo.title +"<div>")
-      booksOnSite.innerHTML = booksToAdd
-  }
-}
-  return (
-    <div className="App">
-      <form className="search-form" id="searchForm">
-        <input type="text" id="search"/>
-        <button type="submit">Szukaj</button>
-      </form>
-      <div className="ksiazki">
+      })}
+      
+  },[name])
 
+
+  const search = () =>{
+    setName(draft)
+  }
+
+  const updateDraft = (event) => {
+    setDraft(event.target.value)
+  }
+
+
+  return (
+    <div className="App">   
+        <input onChange={updateDraft} value={draft}/>
+        <button onClick={search}>Szukaj</button>
+      <div className="ksiazki">
+         {/*W volumeInfo w API są informacje typu title, author. Ja wcześniej robiłem 
+        books ? books.map((book) => <div>{book.volumeInfo.title} <img src={book.volumeInfo.imageLinks.thumbnail} alt="Błąd ładowania obrazka"/></div>) : '' 
+        i też działało, ale kolega podpowiedział, że book można pominąć*/}
+      {books ? books.map(({volumeInfo}) => <div key={volumeInfo.title}>{volumeInfo.title} <img src={volumeInfo.imageLinks.thumbnail} alt="Błąd ładowania obrazka"/></div>) : '' }
       </div>
     </div>
   );
