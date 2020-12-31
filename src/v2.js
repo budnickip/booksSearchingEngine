@@ -54,15 +54,13 @@ function App() {
         i też działało, ale kolega podpowiedział, że book można pominąć*/}
       <Router>
         <div>
-        <Link to="/">Home</Link>
-        <Switch>
+
           <Route exact path="/">
              <Main updateDraft={updateDraft} draft={draft} search={search} books={books} />
           </Route>
-        {/*<Route path="/details">
+        <Route path="/details/:bookId">
             <Details/>
-          </Route> */}  
-        </Switch>
+        </Route>   
         </div>
       </Router>
       </div>
@@ -84,16 +82,7 @@ const Books = (props)=>{
     <div>
        {props.books ? props.books.map((book) => <div key={book.id}>{book.volumeInfo.title} 
           <img src={book.volumeInfo.imageLinks.thumbnail} alt="Błąd ładowania obrazka"/>
-          <Router>
-            <div>
-              <Link to={`/details/${book.id}`}>Details</Link>
-              <Switch>
-                <Route path={`/details/${book.id}`}>
-                  <Details info={book.volumeInfo.title}/>
-                </Route>
-              </Switch>
-            </div>
-          </Router>
+          <Link to={`/details/${book.id}`}>Details</Link>
        </div>) : '' }
     </div>
   )
