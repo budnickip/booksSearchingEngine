@@ -81,7 +81,7 @@ const Books = (props)=>{
   return(
     <div>
        {props.books ? props.books.map((book) => <div key={book.id}>{book.volumeInfo.title} 
-          <img src={book.volumeInfo.imageLinks.thumbnail} alt="Błąd ładowania obrazka"/>
+          <img src={book.volumeInfo.imageLinks.smallThumbnail} alt="Błąd ładowania obrazka"/>
           <Link to={`/details/${book.id}`}>Details</Link>
        </div>) : '' }
     </div>
@@ -98,17 +98,24 @@ const Main = (props)=>{
 }
 
 const Details = (props) =>{
-  //console.log(props.match.params.id)
+  let match = useRouteMatch("/details/:bookId");
   let myBook = props.books.filter((book) => {
-    return book.id === 'AwVt-Ocw2N8C'
+    return book.id === match.params.bookId
   })
+  console.log(myBook[0])
   return(
     <div>
-      Coś tam
-      {/*console.log(props.books) */}
+      {/*console.log() */}
       {  /*props.books[0].volumeInfo.info */}
-      {myBook[0].volumeInfo.publisher}
-  {console.log(myBook[0].volumeInfo.publisher)}
+  
+      {myBook[0].volumeInfo.title ? <p>Tytuł: {myBook[0].volumeInfo.title}</p> : ""}
+      {myBook[0].volumeInfo.authors ? <p>Autorzy: {myBook[0].volumeInfo.authors}</p> : ""}
+      {myBook[0].volumeInfo.publisher ? <p>Wydawnictwo: {myBook[0].volumeInfo.publisher}</p>: ""}
+      {myBook[0].volumeInfo.description ? <p>Opis: {myBook[0].volumeInfo.description}</p> : ""}
+      {myBook[0].volumeInfo.publishedDate ? <p>Rok wydania: {myBook[0].volumeInfo.publishedDate}</p> : ""}
+      {myBook[0].volumeInfo.avarageRating ? <p>Średnia ocena: {myBook[0].volumeInfo.avarageRating}</p> : ""}
+      <img src={myBook[0].volumeInfo.imageLinks.thumbnail} alt="Błąd ładowania obrazka"/>
+    
     {/* działa props.books ? props.books.map((book) => <div>{book.id == 'AwVt-Ocw2N8C' ? book.volumeInfo.title : ''} </div>) : '' */}
     </div>
   )
