@@ -42,20 +42,15 @@ function App() {
   const updateDraft = (event) => {
     setDraft(event.target.value)
   }
-
-
-  return (
-
-  
-    <div className="App">   
-        
          {/*W volumeInfo w API są informacje typu title, author. Ja wcześniej robiłem 
         books ? books.map((book) => <div>{book.volumeInfo.title} <img src={book.volumeInfo.imageLinks.thumbnail} alt="Błąd ładowania obrazka"/></div>) : '' 
         i też działało, ale kolega podpowiedział, że book można pominąć*/}
+
+  return (
+    <div className="App">   
       <Router>
         <div>
-
-          <Route exact path="/">
+          <Route exact path="/booksSearchingEngine">
              <Main updateDraft={updateDraft} draft={draft} search={search} books={books} />
           </Route>
         <Route path="/details/:bookId">
@@ -63,8 +58,7 @@ function App() {
         </Route>   
         </div>
       </Router>
-      </div>
-    
+    </div>
   );
 }
 
