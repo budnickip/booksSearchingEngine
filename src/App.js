@@ -36,7 +36,7 @@ function App() {
         console.error("Błąd pobrania API!")
       })}
       
-  },[name])
+  },[name, maxResult])
 
 
   const search = () =>{
@@ -45,6 +45,7 @@ function App() {
       dMaxResult ? setMaxResult(dMaxResult) : setMaxResult(10)
       setDraft('')
       setDMaxResult('')
+      setSearched(true)
     }else{
       setErrDraft('To pole nie może być puste!')
     }
@@ -59,6 +60,9 @@ function App() {
     if(event.target.value > 40){
       setDMaxResult(40)
       setErrResult('Maksymalna wartość wynosi 40!')
+    }else if(event.target.value < 0){
+      setDMaxResult(1)
+      setErrResult('Minimalna wartość wynosi 0!')
     }else{
       setDMaxResult(event.target.value)
       setErrResult('')
@@ -78,11 +82,11 @@ function App() {
         <Link to="/">Home</Link>
         <Switch>
           <Route exact path="/">
-            <Main updateDraft={updateDraft} draft={draft} search={search} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult} errDraft={errDraft}/>
+            <Main updateDraft={updateDraft} draft={draft} search={search} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult} errDraft={errDraft} searched={searched}/>
           </Route>
           {/* Dla githubpages, bo tam domyślna ścieżka początkowa jest /booksSearchingEngine */}
           <Route exact path="/booksSearchingEngine">
-              <Main updateDraft={updateDraft} draft={draft} search={search} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult} errDraft={errDraft}/>
+              <Main updateDraft={updateDraft} draft={draft} search={search} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult} errDraft={errDraft} searched={searched}/>
           </Route>
           <Route path="/details/:bookId">
               <Details books={books}/>
@@ -92,6 +96,36 @@ function App() {
       </Router>
     </div>
   );
+}
+
+const Basic = (props) =>{
+  const [defaultBookJs, setDefaultBookJs] = useState('')
+  useEffect(()=>{
+      fetch(`https://www.googleapis.com/books/v1/volumes?q=javascript&maxResults=5`)
+      .then(response =>{
+        if(response.ok){
+            return response.json()
+        } else {
+            return Promise.reject(response)
+        }
+       })
+      .then((result) => {
+        setDefaultBookJs(result.items)
+      })
+      .catch(error => {
+        console.error("Błąd pobrania API!")
+      })   
+  },[])
+  /*Pusta tablica jako argument sprawi, że useEffect wywoła się tylko za pierwszym razem */
+  return(
+    <div>
+      Tu na razie jest ściernisko
+      {defaultBookJs ? defaultBookJs.map((book) => <div key={book.id}>{book.volumeInfo.title} 
+          <img src={book.volumeInfo.imageLinks.smallThumbnail} alt="Błąd ładowania obrazka"/>
+          <Link to={`/details/${book.id}`}>Details</Link>
+       </div>) : '' }
+    </div>
+  )
 }
 
 const Formularz = (props) =>{
@@ -122,6 +156,7 @@ const Main = (props)=>{
   return(
     <div>
       <Formularz updateDraft={props.updateDraft} draft={props.draft} search={props.search} errResult={props.errResult} updateDResult={props.updateDResult} dMaxResult={props.dMaxResult} errDraft={props.errDraft}/>
+      {!props.searched ? <Basic /> : ''}
       <Books books={props.books} />
     </div>
   )
