@@ -14,6 +14,7 @@ function App() {
   const [books, setBooks] = useState('')
   const [name, setName] = useState('')
   const [draft, setDraft] = useState('')
+  const [errDraft, setErrDraft] = useState('')
   const [searched, setSearched] = useState(false)
   const [dMaxResult, setDMaxResult] = useState('')
   const [maxResult, setMaxResult] = useState('10')
@@ -39,14 +40,19 @@ function App() {
 
 
   const search = () =>{
-    setName(draft)
-    dMaxResult ? setMaxResult(dMaxResult) : setMaxResult(10)
-    setDraft('')
-    setDMaxResult('')
+    if(draft){
+      setName(draft)
+      dMaxResult ? setMaxResult(dMaxResult) : setMaxResult(10)
+      setDraft('')
+      setDMaxResult('')
+    }else{
+      setErrDraft('To pole nie może być puste!')
+    }
   }
 
   const updateDraft = (event) => {
     setDraft(event.target.value)
+    setErrDraft('')
   }
 
   const updateDResult = (event) => {
@@ -64,16 +70,19 @@ function App() {
 
   return (
     <div className="App">   
+    {/*Mogę dodać coś takiego, że na początku oprócz wyszukiwarki, wyświelta się też, książki o JavaScript i wyświetlić jakieś 5 książek
+    Poniżej książki o HTML i wyświetlić 5 książek, a nad tym wszystkim wyszukiwarka i jak coś wyszukam, no to zastępuje te książki
+    tymi z wyszukiwania */}
       <Router>
         <div>
         <Link to="/">Home</Link>
         <Switch>
           <Route exact path="/">
-            <Main updateDraft={updateDraft} draft={draft} search={search} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult}/>
+            <Main updateDraft={updateDraft} draft={draft} search={search} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult} errDraft={errDraft}/>
           </Route>
           {/* Dla githubpages, bo tam domyślna ścieżka początkowa jest /booksSearchingEngine */}
           <Route exact path="/booksSearchingEngine">
-              <Main updateDraft={updateDraft} draft={draft} search={search} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult}/>
+              <Main updateDraft={updateDraft} draft={draft} search={search} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult} errDraft={errDraft}/>
           </Route>
           <Route path="/details/:bookId">
               <Details books={books}/>
@@ -89,6 +98,7 @@ const Formularz = (props) =>{
   return(
     <div>
         <input onChange={props.updateDraft} value={props.draft}/>
+        {props.errDraft ? props.errDraft : ''}
         <p>Podaj ile książek chcesz wyszukać:</p>
         <input onChange={props.updateDResult} value={props.dMaxResult}/>
         {props.errResult ? props.errResult : ''}
@@ -111,7 +121,7 @@ const Books = (props)=>{
 const Main = (props)=>{
   return(
     <div>
-      <Formularz updateDraft={props.updateDraft} draft={props.draft} search={props.search} errResult={props.errResult} updateDResult={props.updateDResult} dMaxResult={props.dMaxResult}/>
+      <Formularz updateDraft={props.updateDraft} draft={props.draft} search={props.search} errResult={props.errResult} updateDResult={props.updateDResult} dMaxResult={props.dMaxResult} errDraft={props.errDraft}/>
       <Books books={props.books} />
     </div>
   )
