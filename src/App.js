@@ -15,9 +15,12 @@ function App() {
   const [name, setName] = useState('')
   const [draft, setDraft] = useState('')
   const [searched, setSearched] = useState(false)
+  const [dMaxResult, setDMaxResult] = useState('')
+  const [maxResult, setMaxResult] = useState('10')
+  const [errResult, setErrResult] = useState('')
   useEffect(()=>{
     if(name){
-      fetch(`https://www.googleapis.com/books/v1/volumes?q=${name}`)
+      fetch(`https://www.googleapis.com/books/v1/volumes?q=${name}&maxResults=${maxResult}`)
       .then(response =>{
         if(response.ok){
             return response.json()
@@ -37,10 +40,23 @@ function App() {
 
   const search = () =>{
     setName(draft)
+    dMaxResult ? setMaxResult(dMaxResult) : setMaxResult(10)
+    setDraft('')
+    setDMaxResult('')
   }
 
   const updateDraft = (event) => {
     setDraft(event.target.value)
+  }
+
+  const updateDResult = (event) => {
+    if(event.target.value > 40){
+      setDMaxResult(40)
+      setErrResult('Maksymalna wartość wynosi 40!')
+    }else{
+      setDMaxResult(event.target.value)
+      setErrResult('')
+    }
   }
          {/*W volumeInfo w API są informacje typu title, author. Ja wcześniej robiłem 
         books ? books.map((book) => <div>{book.volumeInfo.title} <img src={book.volumeInfo.imageLinks.thumbnail} alt="Błąd ładowania obrazka"/></div>) : '' 
@@ -50,12 +66,19 @@ function App() {
     <div className="App">   
       <Router>
         <div>
-          <Route exact path="/booksSearchingEngine">
-             <Main updateDraft={updateDraft} draft={draft} search={search} books={books} />
+        <Link to="/">Home</Link>
+        <Switch>
+          <Route exact path="/">
+            <Main updateDraft={updateDraft} draft={draft} search={search} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult}/>
           </Route>
-        <Route path="/details/:bookId">
-            <Details books={books}/>
-        </Route>   
+          {/* Dla githubpages, bo tam domyślna ścieżka początkowa jest /booksSearchingEngine */}
+          <Route exact path="/booksSearchingEngine">
+              <Main updateDraft={updateDraft} draft={draft} search={search} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult}/>
+          </Route>
+          <Route path="/details/:bookId">
+              <Details books={books}/>
+          </Route>  
+        </Switch> 
         </div>
       </Router>
     </div>
@@ -66,6 +89,9 @@ const Formularz = (props) =>{
   return(
     <div>
         <input onChange={props.updateDraft} value={props.draft}/>
+        <p>Podaj ile książek chcesz wyszukać:</p>
+        <input onChange={props.updateDResult} value={props.dMaxResult}/>
+        {props.errResult ? props.errResult : ''}
         <button onClick={props.search}>Szukaj</button>
     </div>
   )
@@ -85,7 +111,7 @@ const Books = (props)=>{
 const Main = (props)=>{
   return(
     <div>
-      <Formularz updateDraft={props.updateDraft} draft={props.draft} search={props.search}/>
+      <Formularz updateDraft={props.updateDraft} draft={props.draft} search={props.search} errResult={props.errResult} updateDResult={props.updateDResult} dMaxResult={props.dMaxResult}/>
       <Books books={props.books} />
     </div>
   )
