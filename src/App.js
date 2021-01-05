@@ -79,7 +79,8 @@ function App() {
     tymi z wyszukiwania */}
       <Router>
         <div>
-        <Link to="/">Home</Link>
+          {/* Na github przy Home muszę dać link do /bookSearchingEngine */}
+        <Link to="/booksSearchingEngine">Home</Link>
         <Switch>
           <Route exact path="/">
             <Main updateDraft={updateDraft} draft={draft} search={search} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult} errDraft={errDraft} searched={searched}/>
@@ -119,7 +120,6 @@ const Basic = (props) =>{
   /*Pusta tablica jako argument sprawi, że useEffect wywoła się tylko za pierwszym razem */
   return(
     <div>
-      Tu na razie jest ściernisko
       {defaultBookJs ? defaultBookJs.map((book) => <div key={book.id}>{book.volumeInfo.title} 
           <img src={book.volumeInfo.imageLinks.smallThumbnail} alt="Błąd ładowania obrazka"/>
           <Link to={`/details/${book.id}`}>Details</Link>
