@@ -80,8 +80,6 @@ function App() {
       <Router>
         <div>
           {/* Na github przy Home muszę dać link do /bookSearchingEngine */}
-        <Link to="/booksSearchingEngine">Home</Link>
-        <Switch>
           <Route exact path="/">
             <Main updateDraft={updateDraft} draft={draft} search={search} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult} errDraft={errDraft} searched={searched}/>
           </Route>
@@ -92,7 +90,6 @@ function App() {
           <Route path="/details/:bookId">
               <Details />
           </Route>  
-        </Switch> 
         </div>
       </Router>
     </div>
@@ -146,7 +143,7 @@ const Books = (props)=>{
     <div>
        {props.books ? props.books.map((book) => <div key={book.id}>{book.volumeInfo.title} 
           <img src={book.volumeInfo.imageLinks.smallThumbnail} alt="Błąd ładowania obrazka"/>
-          <Link to={`/details/${book.id}`}>Details</Link>
+          <Link to={`/details/${book.id}`}>Szczegóły</Link>
        </div>) : '' }
     </div>
   )
@@ -193,6 +190,7 @@ const Details = (props) =>{
       {searchedBook[0]?.volumeInfo.publishedDate ? <p>Rok wydania: {searchedBook[0]?.volumeInfo.publishedDate}</p> : ""}
       {searchedBook[0]?.volumeInfo.avarageRating ? <p>Średnia ocena: {searchedBook[0]?.volumeInfo.avarageRating}</p> : ""}
       {searchedBook[0]?.volumeInfo.imageLinks.thumbnail ? <img src={searchedBook[0]?.volumeInfo.imageLinks.thumbnail} alt="Błąd ładowania obrazka"/> : ""}
+      <Link to="/booksSearchingEngine">Powrót</Link>
     </div>
   )
 }
