@@ -89,7 +89,7 @@ function App() {
               <Main updateDraft={updateDraft} draft={draft} search={search} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult} errDraft={errDraft} searched={searched}/>
           </Route>
           <Route path="/details/:bookId">
-              <Details books={books}/>
+              <Details />
           </Route>  
         </Switch> 
         </div>
@@ -164,24 +164,35 @@ const Main = (props)=>{
 
 const Details = (props) =>{
   let match = useRouteMatch("/details/:bookId");
-  let myBook = props.books.filter((book) => {
-    return book.id === match.params.bookId
-  })
-  console.log(myBook[0])
+  const [searchedBook, setSearchedBook] = useState('')
+  const [loaded, setLoaded] = useState(false)
+  useEffect(()=>{
+      fetch(`https://www.googleapis.com/books/v1/volumes?q=${match.params.bookId}`)
+      .then(response =>{
+        if(response.ok){
+            return response.json()
+        } else {
+            return Promise.reject(response)
+        }
+       })
+      .then((result) => {
+        setSearchedBook(result.items)
+      })
+      .catch(error => {
+        console.error("Błąd pobrania API!")
+      })
+      },[])
+
   return(
     <div>
-      {/*console.log() */}
-      {  /*props.books[0].volumeInfo.info */}
-  
-      {myBook[0].volumeInfo.title ? <p>Tytuł: {myBook[0].volumeInfo.title}</p> : ""}
-      {myBook[0].volumeInfo.authors ? <p>Autorzy: {myBook[0].volumeInfo.authors}</p> : ""}
-      {myBook[0].volumeInfo.publisher ? <p>Wydawnictwo: {myBook[0].volumeInfo.publisher}</p>: ""}
-      {myBook[0].volumeInfo.description ? <p>Opis: {myBook[0].volumeInfo.description}</p> : ""}
-      {myBook[0].volumeInfo.publishedDate ? <p>Rok wydania: {myBook[0].volumeInfo.publishedDate}</p> : ""}
-      {myBook[0].volumeInfo.avarageRating ? <p>Średnia ocena: {myBook[0].volumeInfo.avarageRating}</p> : ""}
-      <img src={myBook[0].volumeInfo.imageLinks.thumbnail} alt="Błąd ładowania obrazka"/>
-    
-    {/* działa props.books ? props.books.map((book) => <div>{book.id == 'AwVt-Ocw2N8C' ? book.volumeInfo.title : ''} </div>) : '' */}
+      
+      {searchedBook[0]?.volumeInfo.title ? <p>Tytuł: {searchedBook[0]?.volumeInfo.title}</p> : ""}
+      {searchedBook[0]?.volumeInfo.authors ? <p>Autorzy: {searchedBook[0]?.volumeInfo.authors}</p> : ""}
+      {searchedBook[0]?.volumeInfo.publisher ? <p>Wydawnictwo: {searchedBook[0]?.volumeInfo.publisher}</p>: ""}
+      {searchedBook[0]?.volumeInfo.description ? <p>Opis: {searchedBook[0]?.volumeInfo.description}</p> : ""}
+      {searchedBook[0]?.volumeInfo.publishedDate ? <p>Rok wydania: {searchedBook[0]?.volumeInfo.publishedDate}</p> : ""}
+      {searchedBook[0]?.volumeInfo.avarageRating ? <p>Średnia ocena: {searchedBook[0]?.volumeInfo.avarageRating}</p> : ""}
+      {searchedBook[0]?.volumeInfo.imageLinks.thumbnail ? <img src={searchedBook[0]?.volumeInfo.imageLinks.thumbnail} alt="Błąd ładowania obrazka"/> : ""}
     </div>
   )
 }
