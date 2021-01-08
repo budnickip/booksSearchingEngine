@@ -4,7 +4,7 @@ import Form from '../Form'
 
 
 const Container = styled.header`
-    height: 70vh;
+    height: 60vh;
     width: 100%;
     background-image: url(${backgroundImg});
     background-size: cover;

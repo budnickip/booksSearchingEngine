@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import FontAwesomeIcon from '@fortawesome/fontawesome-free'
 
 const Container = styled.div`
   position: absolute;
