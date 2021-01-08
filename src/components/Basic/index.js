@@ -14,8 +14,9 @@ const Container = styled.div`
 const Card = styled.div`
    display: flex;
    flex-direction: column;
+   align-items: center;
    justify-content: space-between;
-   width: 140px;
+   width: 200px;
    background-color: white;
    color: #333;
    padding: 8px 16px;
