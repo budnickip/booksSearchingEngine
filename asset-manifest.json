@@ -1,25 +1,25 @@
 {
   "files": {
     "main.css": "/booksSearchingEngine/static/css/main.60fc0347.chunk.css",
-    "main.js": "/booksSearchingEngine/static/js/main.304ca46f.chunk.js",
-    "main.js.map": "/booksSearchingEngine/static/js/main.304ca46f.chunk.js.map",
+    "main.js": "/booksSearchingEngine/static/js/main.e188887a.chunk.js",
+    "main.js.map": "/booksSearchingEngine/static/js/main.e188887a.chunk.js.map",
     "runtime-main.js": "/booksSearchingEngine/static/js/runtime-main.e2cc909c.js",
     "runtime-main.js.map": "/booksSearchingEngine/static/js/runtime-main.e2cc909c.js.map",
     "static/css/2.9120b907.chunk.css": "/booksSearchingEngine/static/css/2.9120b907.chunk.css",
-    "static/js/2.0d505324.chunk.js": "/booksSearchingEngine/static/js/2.0d505324.chunk.js",
-    "static/js/2.0d505324.chunk.js.map": "/booksSearchingEngine/static/js/2.0d505324.chunk.js.map",
+    "static/js/2.72b31b41.chunk.js": "/booksSearchingEngine/static/js/2.72b31b41.chunk.js",
+    "static/js/2.72b31b41.chunk.js.map": "/booksSearchingEngine/static/js/2.72b31b41.chunk.js.map",
     "index.html": "/booksSearchingEngine/index.html",
     "static/css/2.9120b907.chunk.css.map": "/booksSearchingEngine/static/css/2.9120b907.chunk.css.map",
     "static/css/main.60fc0347.chunk.css.map": "/booksSearchingEngine/static/css/main.60fc0347.chunk.css.map",
-    "static/js/2.0d505324.chunk.js.LICENSE.txt": "/booksSearchingEngine/static/js/2.0d505324.chunk.js.LICENSE.txt",
+    "static/js/2.72b31b41.chunk.js.LICENSE.txt": "/booksSearchingEngine/static/js/2.72b31b41.chunk.js.LICENSE.txt",
     "static/media/index.css": "/booksSearchingEngine/static/media/fa-solid-900.46fdbd2d.woff",
     "static/media/header.a447b5b8.jpg": "/booksSearchingEngine/static/media/header.a447b5b8.jpg"
   },
   "entrypoints": [
     "static/js/runtime-main.e2cc909c.js",
     "static/css/2.9120b907.chunk.css",
-    "static/js/2.0d505324.chunk.js",
+    "static/js/2.72b31b41.chunk.js",
     "static/css/main.60fc0347.chunk.css",
-    "static/js/main.304ca46f.chunk.js"
+    "static/js/main.e188887a.chunk.js"
   ]
 }
