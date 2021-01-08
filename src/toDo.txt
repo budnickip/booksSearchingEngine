@@ -1,2 +1,4 @@
-Wyszukuje książki - po wyszukaniu wyświetla tylko tytuł i obrazek, na który można kliknąć
-i za pomocą React Router, zostaniemy przekierowani do szczegółów na temat danej książki
+Ostylować jak stronę prawdziwej księgarni - może dodać opcję dodawania do ulubionych, która będzie trzymana w localstorage, gdzieś u góry
+może wtedy zrobić jakieś menu, gdzie będzie można sprawdzać swoje ulubione książki.
+Najlepiej będzie wtedy trzymać ID książek, którą ktoś polubił i jak będzie chciał wyświetlić swoje ulubione to wyszukać szybko po ID wszystkie
+za pomocą jakiegoś forecha
