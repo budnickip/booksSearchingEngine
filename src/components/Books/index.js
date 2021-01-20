@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import {Link} from "react-router-dom"
 import styled from 'styled-components'
+import * as palette from '../../variables/index'
 
 const Container = styled.div`
   display: flex;
@@ -16,8 +17,8 @@ const Card = styled.div`
    align-items: center;
    justify-content: space-between;
    width: 200px;
-   background-color: white;
-   color: #333;
+   background-color: ${palette.baseWhite};
+   color: ${palette.baseBackGround};
    padding: 8px 16px;
    margin: 30px;
    border-radius: 7px;
@@ -25,7 +26,7 @@ const Card = styled.div`
 
 const More = styled(Link)`
   text-decoration: none;
-  color: #A46877;
+  color: ${palette.ornaments};
   transition: .1s ease-in-out;
   align-self: flex-end;
   &:hover{
@@ -48,10 +49,10 @@ const CardFooter = styled.div`
 `
 
 const Icon = styled.span`
-   color: #A46877;
+   color: ${palette.ornaments};
    cursor: pointer;
    &:hover{
-      color: #E08976;
+      color: ${palette.lighterOrnaments};
    }
 `
 

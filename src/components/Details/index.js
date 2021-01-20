@@ -1,5 +1,92 @@
 import { useEffect, useState } from 'react';
 import {Link, useRouteMatch} from "react-router-dom";
+import styled from 'styled-components';
+import * as palette from '../../variables';
+
+const Container = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin: 2em;
+  line-height: 1.2em;
+`
+const Image = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`
+
+const Title = styled.h2`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: 1.5em;
+  font-weight: 600;
+  margin: 1em;
+`
+
+const Paragraph = styled.p`
+  margin: 0.8em;
+  width: 100%;
+`
+
+const Distinction = styled.p`
+  color: ${palette.darkerWhite};
+  font-weight: 700;
+`
+
+const More = styled(Link)`
+  text-decoration: none;
+  background-color: ${palette.ornaments};
+  color: ${palette.darkerWhite};
+  font-size: 1.2em;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 5px;
+  transition: .3s ease-in-out;
+  margin-right: 15px;
+  &:hover{
+    background-color: ${palette.darkerWhite};
+    color: ${palette.ornaments};
+  }
+`
+
+const Icon = styled.span`
+  background-color: ${palette.ornaments};
+  color: ${palette.darkerWhite};
+  font-size: 1.2em;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 5px;
+  transition: .3s ease-in-out;
+  cursor: pointer;
+  margin-left: 15px;
+  &:hover{
+    background-color: ${palette.darkerWhite};
+    color: ${palette.ornaments};
+  }
+`
+
+const BookDetails = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`
+
+const BookInformation = styled.div`
+  min-width: 200px;
+  flex: 1;
+`
+
+const BookDescription = styled.div`
+  min-width: 350px;
+  flex: 3;
+`
+
+const Buttons = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`
 
 const Details = (props) =>{
     let match = useRouteMatch("/details/:bookId");
@@ -22,16 +109,25 @@ const Details = (props) =>{
         },[])
   
     return(
-      <div>
-        {searchedBook[0]?.volumeInfo.imageLinks.thumbnail ? <img src={searchedBook[0]?.volumeInfo.imageLinks.thumbnail} alt="Błąd ładowania obrazka"/> : ""}
-        {searchedBook[0]?.volumeInfo.title ? <p>Tytuł: {searchedBook[0]?.volumeInfo.title}</p> : ""}
-        {searchedBook[0]?.volumeInfo.authors ? <p>Autorzy: {searchedBook[0]?.volumeInfo.authors}</p> : ""}
-        {searchedBook[0]?.volumeInfo.publisher ? <p>Wydawnictwo: {searchedBook[0]?.volumeInfo.publisher}</p>: ""}
-        {searchedBook[0]?.volumeInfo.description ? <p>Opis: {searchedBook[0]?.volumeInfo.description}</p> : ""}
-        {searchedBook[0]?.volumeInfo.publishedDate ? <p>Rok wydania: {searchedBook[0]?.volumeInfo.publishedDate}</p> : ""}
-        {searchedBook[0]?.volumeInfo.avarageRating ? <p>Średnia ocena: {searchedBook[0]?.volumeInfo.avarageRating}</p> : ""}
-        <Link to="/booksSearchingEngine">Powrót</Link>
-      </div>
+      <Container>
+        {searchedBook[0]?.volumeInfo.imageLinks.thumbnail ? <Image><img src={searchedBook[0]?.volumeInfo.imageLinks.thumbnail} alt="Błąd ładowania obrazka"/></Image> : ""}
+        {searchedBook[0]?.volumeInfo.title ? <Title>{searchedBook[0]?.volumeInfo.title}</Title> : ""}
+        <BookDetails>
+          <BookInformation>
+            {searchedBook[0]?.volumeInfo.authors ? <Paragraph><Distinction>Autorzy:</Distinction> {searchedBook[0]?.volumeInfo.authors}</Paragraph> : ""}
+            {searchedBook[0]?.volumeInfo.publisher ? <Paragraph><Distinction>Wydawnictwo:</Distinction> {searchedBook[0]?.volumeInfo.publisher}</Paragraph>: ""}
+            {searchedBook[0]?.volumeInfo.publishedDate ? <Paragraph><Distinction>Rok wydania:</Distinction> {searchedBook[0]?.volumeInfo.publishedDate}</Paragraph> : ""}
+            {searchedBook[0]?.volumeInfo.avarageRating ? <Paragraph><Distinction>Średnia ocena:</Distinction> {searchedBook[0]?.volumeInfo.avarageRating}</Paragraph> : ""}
+          </BookInformation>
+          <BookDescription>
+            {searchedBook[0]?.volumeInfo.description ? <Paragraph><Distinction>Opis:</Distinction> {searchedBook[0]?.volumeInfo.description}</Paragraph> : ""}
+          </BookDescription>
+        </BookDetails>
+        <Buttons>
+          <More to="/booksSearchingEngine">Powrót</More>
+          <Icon className="fas fa-heart"> Dodaj do ulubionych</Icon> 
+        </Buttons>
+      </Container>
     )
   }
 
