@@ -56,7 +56,7 @@ const Paragraph = styled.p`
   font-size: 1.5em;
   font-weight: 600;
 `
-const Icon = styled.i`
+const Icon = styled.span`
   color: #333333;
   font-size: 1.5em;
   margin-right: .7em;
