@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import Details from './components/Details'
 import Main from './components/Main'
-
+import UserPanel from './components/UserPanel'
 
 function App() {
   const [books, setBooks] = useState('')
@@ -73,10 +73,8 @@ function App() {
         i też działało, ale kolega podpowiedział, że book można pominąć*/}
 
   return (
-    <div className="App">   
-    {/*Mogę dodać coś takiego, że na początku oprócz wyszukiwarki, wyświelta się też, książki o JavaScript i wyświetlić jakieś 5 książek
-    Poniżej książki o HTML i wyświetlić 5 książek, a nad tym wszystkim wyszukiwarka i jak coś wyszukam, no to zastępuje te książki
-    tymi z wyszukiwania */}
+    <div className="App">  
+      <UserPanel />
       <Router>
         <div>
           {/* Na github przy Home muszę dać link do /bookSearchingEngine */}
