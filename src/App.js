@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState} from 'react';
 import './App.css';
 import React from "react";
 import {
@@ -18,6 +18,11 @@ function App() {
   const [dMaxResult, setDMaxResult] = useState('')
   const [maxResult, setMaxResult] = useState('10')
   const [errResult, setErrResult] = useState('')
+  const [open, setOpen] = useState(false)
+  const [iconName, setIconName] = useState(open ? 'fas fa-times' : 'fas fa-user')
+  const [favoriteList, setFavoriteList] = useState([])
+  //const modalRef = useRef()
+  //const appRef = useRef()
   useEffect(()=>{
     if(name){
       fetch(`https://www.googleapis.com/books/v1/volumes?q=${name}&maxResults=${maxResult}`)
@@ -71,22 +76,31 @@ function App() {
          {/*W volumeInfo w API są informacje typu title, author. Ja wcześniej robiłem 
         books ? books.map((book) => <div>{book.volumeInfo.title} <img src={book.volumeInfo.imageLinks.thumbnail} alt="Błąd ładowania obrazka"/></div>) : '' 
         i też działało, ale kolega podpowiedział, że book można pominąć*/}
+  const toggleOpen = () =>{
+      setOpen(!open)
+      setIconName(open ? 'fas fa-user' : 'fas fa-times')
+  }
+
+  const addFavorite = (newbook) =>{
+    setFavoriteList(prevFavoriteList => [...prevFavoriteList, newbook])
+  }
 
   return (
-    <div className="App">  
-      <UserPanel />
+    <div className="App" >
+   
+      <UserPanel toggleOpen={()=>toggleOpen()} open={open} iconName={iconName} setOpen={setOpen} favoriteList={favoriteList}/>
       <Router>
         <div>
           {/* Na github przy Home muszę dać link do /bookSearchingEngine */}
           <Route exact path="/">
-            <Main updateDraft={updateDraft} draft={draft} search={search} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult} errDraft={errDraft} searched={searched}/>
+            <Main updateDraft={updateDraft} draft={draft} search={search} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult} errDraft={errDraft} searched={searched} addFavorite={addFavorite}/>
           </Route>
           {/* Dla githubpages, bo tam domyślna ścieżka początkowa jest /booksSearchingEngine */}
           <Route exact path="/booksSearchingEngine">
-              <Main updateDraft={updateDraft} draft={draft} search={search} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult} errDraft={errDraft} searched={searched}/>
+              <Main updateDraft={updateDraft} draft={draft} search={search} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult} errDraft={errDraft} searched={searched} addFavorite={addFavorite}/>
           </Route>
           <Route path="/details/:bookId">
-              <Details />
+              <Details addFavorite={addFavorite} />
           </Route>  
         </div>
       </Router>

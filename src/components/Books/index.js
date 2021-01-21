@@ -56,8 +56,9 @@ const Icon = styled.span`
    }
 `
 
-
 const Books = (props)=>{
+
+
 
     return(
       <Container>
@@ -66,7 +67,7 @@ const Books = (props)=>{
             <Paragraph>{book.volumeInfo.title}</Paragraph>
             <Image src={book.volumeInfo.imageLinks.smallThumbnail} alt="Błąd ładowania obrazka"/>
             <CardFooter>
-               <Icon className="fas fa-heart"></Icon> 
+               <Icon className="fas fa-heart" onClick={() => props.addFavorite({title: book.volumeInfo.title, img: book.volumeInfo.imageLinks.smallThumbnail, id: book.id})}></Icon> 
                <More to={`/details/${book.id}`}>Szczegóły</More>
             </CardFooter>
          </Card>) : '' }

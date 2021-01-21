@@ -30,7 +30,8 @@ const Paragraph = styled.p`
   width: 100%;
 `
 
-const Distinction = styled.p`
+const Distinction = styled.span`
+  display: block;
   color: ${palette.darkerWhite};
   font-weight: 700;
 `
@@ -125,7 +126,7 @@ const Details = (props) =>{
         </BookDetails>
         <Buttons>
           <More to="/booksSearchingEngine">Powrót</More>
-          <Icon className="fas fa-heart"> Dodaj do ulubionych</Icon> 
+          <Icon className="fas fa-heart" onClick={() => props.addFavorite({title: searchedBook[0]?.volumeInfo.title, img: searchedBook[0]?.volumeInfo.imageLinks.smallThumbnail, id: searchedBook[0]?.id})}> Dodaj do ulubionych</Icon> 
         </Buttons>
       </Container>
     )

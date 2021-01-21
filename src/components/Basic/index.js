@@ -22,7 +22,7 @@ const Basic = (props) =>{
     },[])
     /*Pusta tablica jako argument sprawi, że useEffect wywoła się tylko za pierwszym razem */
     return( 
-        <Books books={defaultBookJs} />     
+        <Books books={defaultBookJs} addFavorite={props.addFavorite}/>     
     )
   }
 
