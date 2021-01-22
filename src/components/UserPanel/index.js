@@ -22,6 +22,8 @@ const Container = styled.div `
     -webkit-box-shadow: ${props => props.open ? 'unset' : '0px 5px 30px 0 rgba(0, 0, 0, 0.1)'};
     -moz-box-shadow: ${props => props.open ? 'unset' : '0px 5px 30px 0 rgba(0, 0, 0, 0.1)'};
     box-shadow: ${props => props.open ? 'unset' : '0px 5px 30px 0 rgba(0, 0, 0, 0.1)'};
+    overflow: hidden;
+    overflow-y: ${props => props.open ? 'scroll' : 'hidden'}; 
     `
 
 const User = styled.span `
