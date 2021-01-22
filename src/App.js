@@ -1,4 +1,4 @@
-import { useEffect, useState} from 'react';
+import { useEffect, useState, useRef} from 'react';
 import './App.css';
 import React from "react";
 import {
@@ -21,6 +21,10 @@ function App() {
   const [open, setOpen] = useState(false)
   const [iconName, setIconName] = useState(open ? 'fas fa-times' : 'fas fa-user')
   const [favoriteList, setFavoriteList] = useState([])
+  const [bookToAdd, setBookToAdd] = useState({})
+  const [duplicate, setDuplicate] = useState(false)
+  const [testItem, setTestItem] = useState(true)
+  const [firstLoad, setFirstLoad] = useState(true)
   //const modalRef = useRef()
   //const appRef = useRef()
   useEffect(()=>{
@@ -77,20 +81,38 @@ function App() {
         books ? books.map((book) => <div>{book.volumeInfo.title} <img src={book.volumeInfo.imageLinks.thumbnail} alt="Błąd ładowania obrazka"/></div>) : '' 
         i też działało, ale kolega podpowiedział, że book można pominąć*/}
   const toggleOpen = () =>{
-      setOpen(!open)
+      setOpen(open => !open)
       setIconName(open ? 'fas fa-user' : 'fas fa-times')
   }
 
   const addFavorite = (newbook) =>{
-    setFavoriteList(prevFavoriteList => [...prevFavoriteList, newbook])
+    favoriteList.forEach(bookid => {if(bookid.id===newbook.id){
+      setDuplicate(true)
+    }
+    })
+    setBookToAdd(newbook)
+    setTestItem(testItem => !testItem)
   }
+
+  useEffect(()=>{
+    if(!firstLoad){
+      if(duplicate){
+        console.log('nie dodawaj')
+        alert("Posiadasz już ten przedmiot w ulubionych")
+      }else{
+        setFavoriteList(prevFavoriteList => [...prevFavoriteList, bookToAdd])
+      }
+      setDuplicate(false)
+    }
+    setFirstLoad(false)
+  },[testItem])
 
   return (
     <div className="App" >
    
-      <UserPanel toggleOpen={()=>toggleOpen()} open={open} iconName={iconName} setOpen={setOpen} favoriteList={favoriteList}/>
       <Router>
         <div>
+        <UserPanel toggleOpen={()=>toggleOpen()} open={open} iconName={iconName} setOpen={setOpen} favoriteList={favoriteList}/>
           {/* Na github przy Home muszę dać link do /bookSearchingEngine */}
           <Route exact path="/">
             <Main updateDraft={updateDraft} draft={draft} search={search} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult} errDraft={errDraft} searched={searched} addFavorite={addFavorite}/>

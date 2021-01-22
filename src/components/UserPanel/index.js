@@ -24,6 +24,9 @@ const Container = styled.div `
     box-shadow: ${props => props.open ? 'unset' : '0px 5px 30px 0 rgba(0, 0, 0, 0.1)'};
     overflow: hidden;
     overflow-y: ${props => props.open ? 'scroll' : 'hidden'}; 
+    @media (min-width: 1px) and (max-width: 768px){
+        width: ${props => props.open ? '100%' : '60px'};
+    }
     `
 
 const User = styled.span `
@@ -53,6 +56,21 @@ const Paragraph = styled.p `
     font-size: 1.2em;
     `
 
+const Item = styled.li`
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+`
+
+const Title = styled.p`
+    width: 100%;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+`
+
 const UserPanel = (props) =>{
 
     return(
@@ -64,7 +82,10 @@ const UserPanel = (props) =>{
             <Panel>
                 <Paragraph>Lista Twoich ulubionych książek:</Paragraph>
                 <ul>{props.favoriteList.map(book => {
-                   return <li key={book.id}><img src={book.img} alt="błąd ładowania obrazka"/>{book.title}</li>
+                   return <Item key={book.id}>
+                       <img src={book.img} alt="błąd ładowania obrazka"/>
+                       <Link to={`/details/${book.id}`} onClick={props.toggleOpen}><Title>{book.title}</Title></Link>
+                       </Item>
                 })}</ul>
             </Panel> : ''}
         </Container>
