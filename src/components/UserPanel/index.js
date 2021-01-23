@@ -1,5 +1,5 @@
-import { useEffect, useState, useRef } from 'react';
-import {Link, useRouteMatch} from "react-router-dom";
+import { useEffect, useState } from "react";
+import {Link} from "react-router-dom";
 import styled from 'styled-components';
 import * as palette from '../../variables'
 
@@ -24,6 +24,9 @@ const Container = styled.div `
     box-shadow: ${props => props.open ? 'unset' : '0px 5px 30px 0 rgba(0, 0, 0, 0.1)'};
     overflow: hidden;
     overflow-y: ${props => props.open ? 'scroll' : 'hidden'}; 
+    &::-webkit-scrollbar {
+        width: 0px;
+    }
     @media (min-width: 1px) and (max-width: 768px){
         width: ${props => props.open ? '100%' : '60px'};
     }
@@ -71,8 +74,33 @@ const Title = styled.p`
     padding-top: 10px;
 `
 
-const UserPanel = (props) =>{
+const NavDetails = styled(Link)`
+    display:flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    text-decoration: none;
+    color: ${palette.baseBackGround};
+`
 
+const UserPanel = (props) =>{
+    const [edit, setEdit] = useState(false)
+    const [checkBook, setCheckBook] = useState([])
+    const toggleEdit = () =>{
+        setEdit(edit => !edit)
+        if(edit){
+            addBooksToDelete()
+        }
+    }
+    const addBooksToDelete = () =>{
+        const array = document.querySelectorAll('.checkFavBooks')
+        array.forEach(item => {
+            if(item.checked){
+                setCheckBook(checkBook => [...checkBook, item.id])
+                props.deleteBooks(checkBook)
+            }})
+      }
+
+      //toDO: dodawać do tablicy tylko te książki, które mają checked po kliknięciu zapisz
     return(
         <Container open={props.open}>
             <Menu onClick={props.toggleOpen}>
@@ -80,11 +108,18 @@ const UserPanel = (props) =>{
             </Menu>
             {props.open ? 
             <Panel>
+                <div>
                 <Paragraph>Lista Twoich ulubionych książek:</Paragraph>
+                {edit ? <button onClick={toggleEdit} >Usuń zaznaczone</button> : <button onClick={toggleEdit}>Edytuj</button>}
+                </div>
+                
                 <ul>{props.favoriteList.map(book => {
                    return <Item key={book.id}>
-                       <img src={book.img} alt="błąd ładowania obrazka"/>
-                       <Link to={`/details/${book.id}`} onClick={props.toggleOpen}><Title>{book.title}</Title></Link>
+                        <NavDetails to={`/details/${book.id}`} onClick={props.toggleOpen}>
+                            <img src={book.img} alt="błąd ładowania obrazka"/>
+                            <Title>{book.title}</Title>
+                        </NavDetails>
+                        {edit && <input id={book.id} className="checkFavBooks" type='checkbox'/>}
                        </Item>
                 })}</ul>
             </Panel> : ''}

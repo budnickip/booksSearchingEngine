@@ -8,6 +8,7 @@ import {
 import Details from './components/Details'
 import Main from './components/Main'
 import UserPanel from './components/UserPanel'
+import Loader from './components/Loader'
 
 function App() {
   const [books, setBooks] = useState('')
@@ -25,10 +26,12 @@ function App() {
   const [duplicate, setDuplicate] = useState(false)
   const [testItem, setTestItem] = useState(true)
   const [firstLoad, setFirstLoad] = useState(true)
+  const [loading, setLoading] = useState(false)
   //const modalRef = useRef()
   //const appRef = useRef()
   useEffect(()=>{
     if(name){
+      setLoading(true)
       fetch(`https://www.googleapis.com/books/v1/volumes?q=${name}&maxResults=${maxResult}`)
       .then(response =>{
         if(response.ok){
@@ -38,6 +41,7 @@ function App() {
         }
        })
       .then((result) => {
+        setLoading(false)
         setBooks(result.items)
       })
       .catch(error => {
@@ -97,7 +101,6 @@ function App() {
   useEffect(()=>{
     if(!firstLoad){
       if(duplicate){
-        console.log('nie dodawaj')
         alert("Posiadasz już ten przedmiot w ulubionych")
       }else{
         setFavoriteList(prevFavoriteList => [...prevFavoriteList, bookToAdd])
@@ -107,12 +110,41 @@ function App() {
     setFirstLoad(false)
   },[testItem])
 
+  const deleteBooks = (booksToDelete) =>{
+    const indexes = []
+    booksToDelete.forEach(book => {
+      favoriteList.forEach((favorite, index) => {
+        console.log(`book: ${book}`)
+        console.log(`favorite.id: ${favorite.id}`)
+        if(favorite.id === book){
+          indexes.push(index)
+        }
+      })
+    })
+    console.log(`indexes: ${indexes}`)
+    indexes.forEach = (item => {
+  //   setFavoriteList(favoriteList => [...favoriteList.slice(0,item).concat(...favoriteList(item+1))])
+      setFavoriteList(favoriteList => favoriteList.filter((item2, index)=>{
+        return item !== index;
+      }))
+      // tutaj nie działa, kij wie dlaczego
+      //updateList(list.filter(item => item.name !== name));
+    })
+    console.log(favoriteList)
+  }
+  if(loading){
+    return (
+      <Loader />
+    )
+  }else{
+
+  
   return (
     <div className="App" >
-   
+      
       <Router>
         <div>
-        <UserPanel toggleOpen={()=>toggleOpen()} open={open} iconName={iconName} setOpen={setOpen} favoriteList={favoriteList}/>
+        <UserPanel toggleOpen={()=>toggleOpen()} open={open} iconName={iconName} setOpen={setOpen} favoriteList={favoriteList}  deleteBooks={deleteBooks}/>
           {/* Na github przy Home muszę dać link do /bookSearchingEngine */}
           <Route exact path="/">
             <Main updateDraft={updateDraft} draft={draft} search={search} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult} errDraft={errDraft} searched={searched} addFavorite={addFavorite}/>
@@ -128,6 +160,7 @@ function App() {
       </Router>
     </div>
   );
+  }
 }
 
 export default App;
