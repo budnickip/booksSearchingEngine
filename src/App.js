@@ -27,6 +27,8 @@ function App() {
   const [testItem, setTestItem] = useState(true)
   const [firstLoad, setFirstLoad] = useState(true)
   const [loading, setLoading] = useState(false)
+  const [indexes, setIndexes] = useState(0)
+  const [firstLoad2, setFirstLoad2] = useState(true)
   //const modalRef = useRef()
   //const appRef = useRef()
   useEffect(()=>{
@@ -110,28 +112,70 @@ function App() {
     setFirstLoad(false)
   },[testItem])
 
-  const deleteBooks = (booksToDelete) =>{
-    const indexes = []
+ /* const deleteBooks = (booksToDelete) =>{
+   // const indexes = []
+   let favoriteArray =[]
     booksToDelete.forEach(book => {
       favoriteList.forEach((favorite, index) => {
-        console.log(`book: ${book}`)
-        console.log(`favorite.id: ${favorite.id}`)
+       /* console.log(`book: ${book}`)
+        console.log(`favorite.id: ${favorite.id}`) 
         if(favorite.id === book){
-          indexes.push(index)
+          setIndexes([indexes, index])
         }
       })
     })
-    console.log(`indexes: ${indexes}`)
-    indexes.forEach = (item => {
-  //   setFavoriteList(favoriteList => [...favoriteList.slice(0,item).concat(...favoriteList(item+1))])
-      setFavoriteList(favoriteList => favoriteList.filter((item2, index)=>{
+    favoriteArray = [...favoriteList]
+    console.log(favoriteArray)
+    setFavoriteList([favoriteArray.slice(0,1).concat(...favoriteArray(2))])
+  //  console.log(`indexes: ${indexes[1]}`)
+   /* indexes.forEach = (item => {
+     setFavoriteList(favoriteList => [...favoriteList.slice(0,item).concat(...favoriteList(item+1))])
+     console.log("Czy to się wykonuje???")
+     /* setFavoriteList(favoriteList => favoriteList.filter((item2, index)=>{
         return item !== index;
-      }))
+      })) 
       // tutaj nie działa, kij wie dlaczego
       //updateList(list.filter(item => item.name !== name));
+    }) 
+   // console.log(favoriteList)
+  } */
+
+  const deleteBooks = (bookToDelete) =>{
+
+    console.log('Wywołana funkcja z App.js, bookToDelete: '+ bookToDelete)
+    favoriteList.forEach((favorite, index) =>{
+      console.log(`favorite.id: ${favorite.id} `)
+      if(favorite.id == bookToDelete){
+        console.log("powinno się wyświetlić po przyrównaniu")
+        setIndexes(index)
+       // setFavoriteList(favoriteList => [...favoriteList.slice(0, index).concat(...favoriteList(index+1))])
+        return;
+      }
     })
-    console.log(favoriteList)
   }
+
+  useEffect(()=>{
+    if(!firstLoad2){
+      console.log(`indexes: ${indexes}`)
+      console.log(favoriteList[1])
+     // setFavoriteList(favoriteList => [...favoriteList.slice(0, 2).concat(...favoriteList.slice(3))])
+      setFavoriteList(favoriteList => [...favoriteList.slice(0, indexes).concat(...favoriteList.slice(indexes+1))])// działa!!!
+    }else{
+      setFirstLoad2(false)
+    }
+    /*indexes.forEach = (item => {
+      setFavoriteList(favoriteList => [...favoriteList.slice(0,item).concat(...favoriteList(item+1))])
+      console.log("Czy to się wykonuje???")
+      /* setFavoriteList(favoriteList => favoriteList.filter((item2, index)=>{
+         return item !== index;
+       })) =
+       // tutaj nie działa, kij wie dlaczego
+       //updateList(list.filter(item => item.name !== name));
+     })  */
+     
+  },[indexes])
+
+
   if(loading){
     return (
       <Loader />

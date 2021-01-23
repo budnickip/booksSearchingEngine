@@ -96,9 +96,14 @@ const UserPanel = (props) =>{
         array.forEach(item => {
             if(item.checked){
                 setCheckBook(checkBook => [...checkBook, item.id])
-                props.deleteBooks(checkBook)
+                //props.deleteBooks(checkBook)
             }})
       }
+
+      useEffect(()=>{
+        props.deleteBooks(checkBook)
+      //  console.log("teraz usuwaj: " + checkBook)
+      },[checkBook]) 
 
       //toDO: dodawać do tablicy tylko te książki, które mają checked po kliknięciu zapisz
     return(
@@ -106,7 +111,7 @@ const UserPanel = (props) =>{
             <Menu onClick={props.toggleOpen}>
                 <User className={props.iconName}></User>
             </Menu>
-            {props.open ? 
+            {props.open && 
             <Panel>
                 <div>
                 <Paragraph>Lista Twoich ulubionych książek:</Paragraph>
@@ -122,7 +127,7 @@ const UserPanel = (props) =>{
                         {edit && <input id={book.id} className="checkFavBooks" type='checkbox'/>}
                        </Item>
                 })}</ul>
-            </Panel> : ''}
+            </Panel>}
         </Container>
     )
 }
