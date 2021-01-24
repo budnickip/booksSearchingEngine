@@ -29,7 +29,6 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [indexesToDeleteDraft, setIndexesToDeleteDraft] = useState([])
   const [indexesToDelete, setIndexesToDelete] = useState([])
-  const [firstLoad2, setFirstLoad2] = useState(true)
 
   useEffect(()=>{
     if(name){
@@ -112,83 +111,32 @@ function App() {
     setFirstLoad(false)
   },[testItem])
 
- /* const deleteBooks = (booksToDelete) =>{
-   // const indexes = []
-   let favoriteArray =[]
-    booksToDelete.forEach(book => {
-      favoriteList.forEach((favorite, index) => {
-       /* console.log(`book: ${book}`)
-        console.log(`favorite.id: ${favorite.id}`) 
-        if(favorite.id === book){
-          setIndexes([indexes, index])
+
+  const deleteBooks = (bookToDelete) =>{
+    favoriteList.forEach((favorite, index)=>{
+      bookToDelete.forEach(bookId => {
+        if(favorite.id == bookId){
+          console.log("powinno się wyświetlić po przyrównaniu")
+          setIndexesToDeleteDraft(indexesToDeleteDraft => [...indexesToDeleteDraft, index])
         }
       })
     })
-    favoriteArray = [...favoriteList]
-    console.log(favoriteArray)
-    setFavoriteList([favoriteArray.slice(0,1).concat(...favoriteArray(2))])
-  //  console.log(`indexes: ${indexes[1]}`)
-   /* indexes.forEach = (item => {
-     setFavoriteList(favoriteList => [...favoriteList.slice(0,item).concat(...favoriteList(item+1))])
-     console.log("Czy to się wykonuje???")
-     /* setFavoriteList(favoriteList => favoriteList.filter((item2, index)=>{
-        return item !== index;
-      })) 
-      // tutaj nie działa, kij wie dlaczego
-      //updateList(list.filter(item => item.name !== name));
-    }) 
-   // console.log(favoriteList)
-  } */
-
-  const deleteBooks = (bookToDelete) =>{
-    console.log(`checkBook w funkcji deleteBooks: ${bookToDelete}`)
-   // console.log('Wywołana funkcja z App.js, bookToDelete: '+ bookToDelete)
-    favoriteList.forEach((favorite, index) =>{
-     // console.log(`favorite.id: ${favorite.id} `)
-      if(favorite.id == bookToDelete){
-        console.log("powinno się wyświetlić po przyrównaniu")
-        setIndexesToDeleteDraft(indexesToDeleteDraft => [...indexesToDeleteDraft, index])
-        //setFavoriteList(favoriteList => [...favoriteList.slice(0, index).concat(...favoriteList.slice(index+1))])
-        return;
-      }
-    })
-
-   // setIndexesToDelete(indexesToDeleteDraft)
   }
 
   useEffect(()=>{
     if(indexesToDeleteDraft.length > 0){
       setIndexesToDelete(indexesToDeleteDraft)
-  //    setIndexesToDeleteDraft([])
     }
   }, [indexesToDeleteDraft])
 
   useEffect(()=>{
     if(indexesToDelete.length > 0){
-      indexesToDelete.forEach(item=>{
-        setFavoriteList(favoriteList => [...favoriteList.slice(0,item).concat(...favoriteList.slice(item+1))])
-      })
+      setFavoriteList(favoriteList => favoriteList.filter((value, index)=>{
+        return indexesToDelete.indexOf(index) == -1
+      }))
       setIndexesToDeleteDraft([])
     }
   }, [indexesToDelete])
-
- /* useEffect(()=>{
-    if(!firstLoad2){
-      setIndexesToDelete(indexesToDeleteDraft)
-      if(indexesToDelete.length > 0){
-        indexesToDelete.forEach(item=>{
-          setFavoriteList(favoriteList => [...favoriteList.slice(0,item).concat(...favoriteList.slice(item+1))])
-        })
-      }
-      //console.log(`indexes: ${indexes}`)
-      //console.log(favoriteList[1])
-     // setFavoriteList(favoriteList => [...favoriteList.slice(0, 2).concat(...favoriteList.slice(3))])
-    //  setFavoriteList(favoriteList => [...favoriteList.slice(0, indexes).concat(...favoriteList.slice(indexes+1))])// działa!!!
-    }else{
-      setFirstLoad2(false)
-    }
-     
-  },[indexesToDelete]) */
 
 
   if(loading){
