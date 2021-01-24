@@ -84,7 +84,10 @@ const NavDetails = styled(Link)`
 
 const UserPanel = (props) =>{
     const [edit, setEdit] = useState(false)
+    const [checkBookDraft, setCheckBookDraft] = useState([])
     const [checkBook, setCheckBook] = useState([])
+    const [firstLoad, setFirstLoad] = useState(true)
+    const [clearChecked, setClearChecked] = useState(false)
     const toggleEdit = () =>{
         setEdit(edit => !edit)
         if(edit){
@@ -95,15 +98,47 @@ const UserPanel = (props) =>{
         const array = document.querySelectorAll('.checkFavBooks')
         array.forEach(item => {
             if(item.checked){
-                setCheckBook(checkBook => [...checkBook, item.id])
+                setCheckBookDraft(checkBookDraft => [...checkBookDraft, item.id])
                 //props.deleteBooks(checkBook)
             }})
+     //   setCheckBook(checkBookDraft)
       }
+      useEffect(()=>{
+          if(checkBookDraft.length > 0){
+           // console.log(checkBookDraft)
+            setCheckBook(checkBookDraft)
+          }
+      },[checkBookDraft])
 
       useEffect(()=>{
-        props.deleteBooks(checkBook)
-      //  console.log("teraz usuwaj: " + checkBook)
-      },[checkBook]) 
+          if(checkBook.length > 0){
+              console.log(`checkBook przekazywana do funkcji: ${checkBook}`)
+            props.deleteBooks(checkBook)
+            setCheckBookDraft([])
+          }
+      },[checkBook])
+
+  /*    useEffect(()=>{
+         // console.log("HALLO")
+          if(!firstLoad){
+            //  setCheckBook(checkBookDraft)
+              if(checkBook.length > 0){
+                   props.deleteBooks(checkBook)
+                   setClearChecked(true)
+
+              }
+          }else{
+              setFirstLoad(false)
+          }
+      },[checkBook])  */
+
+     /* useEffect(()=>{
+          if(clearChecked){
+                   setCheckBookDraft(checkBookDraft => checkBookDraft.splice(0,checkBookDraft.length))
+                   setCheckBook(checkBook => checkBook.splice(0,checkBook.length))
+          }
+          setClearChecked(false)
+      },[clearChecked])  */
 
       //toDO: dodawać do tablicy tylko te książki, które mają checked po kliknięciu zapisz
     return(
