@@ -24,6 +24,7 @@ const Container = styled.div `
     box-shadow: ${props => props.open ? 'unset' : '0px 5px 30px 0 rgba(0, 0, 0, 0.1)'};
     overflow: hidden;
     overflow-y: ${props => props.open ? 'scroll' : 'hidden'}; 
+    transition: .5s;
     &::-webkit-scrollbar {
         width: 0px;
     }
