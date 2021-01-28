@@ -64,6 +64,7 @@ const Item = styled.li`
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    align-items: center;
 `
 
 const Title = styled.p`
@@ -80,13 +81,32 @@ const NavDetails = styled(Link)`
     flex-wrap: wrap;
     text-decoration: none;
     color: ${palette.baseBackGround};
+    width: 80%;
+`
+
+const Button = styled.button`
+    background-color: ${palette.darkerWhite};
+    color: ${palette.ornaments};
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 5px;
+    transition: .3s ease-in-out;
+    cursor: pointer;
+    margin-top: 10px;
+    &:hover{
+        color: ${palette.lighterOrnaments};
+    }
+`
+
+const MyCheckBox = styled.input`
+    width: 2em;
+    height: 2em;
 `
 
 const UserPanel = (props) =>{
     const [edit, setEdit] = useState(false)
     const [checkBookDraft, setCheckBookDraft] = useState([])
     const [checkBook, setCheckBook] = useState([])
-    const [clearChecked, setClearChecked] = useState(false)
     const toggleEdit = () =>{
         setEdit(edit => !edit)
         if(edit){
@@ -98,13 +118,10 @@ const UserPanel = (props) =>{
         array.forEach(item => {
             if(item.checked){
                 setCheckBookDraft(checkBookDraft => [...checkBookDraft, item.id])
-                //props.deleteBooks(checkBook)
             }})
-     //   setCheckBook(checkBookDraft)
       }
       useEffect(()=>{
           if(checkBookDraft.length > 0){
-           // console.log(checkBookDraft)
             setCheckBook(checkBookDraft)
           }
       },[checkBookDraft])
@@ -117,8 +134,6 @@ const UserPanel = (props) =>{
           }
       },[checkBook])
 
-
-      //toDO: dodawać do tablicy tylko te książki, które mają checked po kliknięciu zapisz
     return(
         <Container open={props.open}>
             <Menu onClick={props.toggleOpen}>
@@ -128,16 +143,16 @@ const UserPanel = (props) =>{
             <Panel>
                 <div>
                 <Paragraph>Lista Twoich ulubionych książek:</Paragraph>
-                {edit ? <button onClick={toggleEdit} >Usuń zaznaczone</button> : <button onClick={toggleEdit}>Edytuj</button>}
+                {edit ? <Button onClick={toggleEdit} >Usuń zaznaczone</Button> : <Button onClick={toggleEdit}>Edytuj</Button>}
                 </div>
                 
                 <ul>{props.favoriteList.map(book => {
                    return <Item key={book.id}>
+                       {edit && <MyCheckBox id={book.id} className="checkFavBooks" type='checkbox'/>}
                         <NavDetails to={`/details/${book.id}`} onClick={props.toggleOpen}>
                             <img src={book.img} alt="błąd ładowania obrazka"/>
                             <Title>{book.title}</Title>
                         </NavDetails>
-                        {edit && <input id={book.id} className="checkFavBooks" type='checkbox'/>}
                        </Item>
                 })}</ul>
             </Panel>}
