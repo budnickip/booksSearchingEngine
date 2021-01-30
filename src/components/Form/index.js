@@ -40,7 +40,7 @@ const InputValue = styled.input`
     outline: none;
     padding: 10px;
     margin: 8px 8px;
-    width: 2em;
+    width: 3em;
     height: 2em;
     &::-webkit-outer-spin-button,
     &::-webkit-inner-spin-button {

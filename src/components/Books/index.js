@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import {Link} from "react-router-dom"
 import styled from 'styled-components'
 import * as palette from '../../variables/index'
+import { ACTIONS } from '../../App'
 
 const Container = styled.div`
   display: flex;
@@ -67,7 +68,8 @@ const Books = (props)=>{
             <Paragraph>{book.volumeInfo.title}</Paragraph>
             <Image src={book.volumeInfo.imageLinks.smallThumbnail} alt="Błąd ładowania obrazka"/>
             <CardFooter>
-               <Icon className="fas fa-heart" onClick={() => props.addFavorite({title: book.volumeInfo.title, img: book.volumeInfo.imageLinks.smallThumbnail, id: book.id})}></Icon> 
+               <Icon className="fas fa-heart" onClick={() => props.dispatch({type: ACTIONS.ADD_BOOK, book: {title: book.volumeInfo.title, img: book.volumeInfo.imageLinks.smallThumbnail, id: book.id}})}></Icon>
+               {/*<Icon className= "fas fa-heart" onClick={() => props.addFavorite({title: book.volumeInfo.title, img: book.volumeInfo.imageLinks.smallThumbnail, id: book.id})}></Icon> */}
                <More to={`/details/${book.id}`}>Szczegóły</More>
             </CardFooter>
          </Card>) : '' }

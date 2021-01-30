@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import {Link} from "react-router-dom";
 import styled from 'styled-components';
-import * as palette from '../../variables'
+import * as palette from '../../variables';
+import { ACTIONS } from '../../App';
 
 
 const Container = styled.div `
@@ -116,9 +117,9 @@ const UserPanel = (props) =>{
     }
     const addBooksToDelete = () =>{
         const array = document.querySelectorAll('.checkFavBooks')
-        array.forEach(item => {
+        array.forEach((item, index) => {
             if(item.checked){
-                setCheckBookDraft(checkBookDraft => [...checkBookDraft, item.id])
+                setCheckBookDraft(checkBookDraft => [...checkBookDraft, index])
             }})
       }
       useEffect(()=>{
@@ -129,8 +130,7 @@ const UserPanel = (props) =>{
 
       useEffect(()=>{
           if(checkBook.length > 0){
-              console.log(`checkBook przekazywana do funkcji: ${checkBook}`)
-            props.deleteBooks(checkBook)
+            props.dispatch({type: ACTIONS.DELETE_BOOKS, bookIndexes: checkBook})
             setCheckBookDraft([])
           }
       },[checkBook])

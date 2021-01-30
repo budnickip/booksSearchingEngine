@@ -1,6 +1,6 @@
 {
   "name": "booksearchengine",
-  "version": "0.1.0",
+  "version": "1.4.2",
   "private": true,
   "homepage": "https://budnickip.github.io/booksSearchingEngine/",
   "dependencies": {

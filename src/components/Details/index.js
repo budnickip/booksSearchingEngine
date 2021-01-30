@@ -3,6 +3,7 @@ import {Link, useRouteMatch} from "react-router-dom";
 import styled from 'styled-components';
 import * as palette from '../../variables';
 import Loader from '../Loader'
+import { ACTIONS } from '../../App'
 
 const Container = styled.div`
   display: flex;
@@ -134,7 +135,9 @@ const Details = (props) =>{
           </BookDetails>
           <Buttons>
             <More to="/booksSearchingEngine">Powrót</More>
-            <Icon className="fas fa-heart" onClick={() => props.addFavorite({title: searchedBook[0]?.volumeInfo.title, img: searchedBook[0]?.volumeInfo.imageLinks.smallThumbnail, id: searchedBook[0]?.id})}> Dodaj do ulubionych</Icon> 
+            {/*<Icon className="fas fa-heart" onClick={() => props.addFavorite({title: searchedBook[0]?.volumeInfo.title, img: searchedBook[0]?.volumeInfo.imageLinks.smallThumbnail, id: searchedBook[0]?.id})}> Dodaj do ulubionych</Icon> */}
+            {/*<Icon className="fas fa-heart" onClick={() => props.dispatch({type: ACTIONS.ADD_BOOK, book: {title: searchedBook[0]?.volumeInfo.title, img: searchedBook[0]?.volumeInfo.imageLinks.smallThumbnail, id: searchedBook[0]?.id}})}> Dodaj do ulubionych</Icon>*/}
+            <Icon className="fas fa-heart" onClick={() => props.dispatch({type: ACTIONS.ADD_BOOK, book: {title: searchedBook[0]?.volumeInfo.title, img: searchedBook[0]?.volumeInfo.imageLinks.smallThumbnail, id: searchedBook[0]?.id}})}> Dodaj do ulubionych</Icon>
           </Buttons>
         </Container>
       )

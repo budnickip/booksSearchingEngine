@@ -1,4 +1,4 @@
-import { useEffect, useState} from 'react';
+import { useEffect, useReducer, useState} from 'react';
 import './App.css';
 import React from "react";
 import {
@@ -9,6 +9,30 @@ import Details from './components/Details'
 import Main from './components/Main'
 import UserPanel from './components/UserPanel'
 import Loader from './components/Loader'
+
+export const ACTIONS = {
+  ADD_BOOK: 'add_book',
+  DELETE_BOOKS: 'delete_books'
+}
+
+function reducer(favoriteList, action){
+  switch(action.type){
+    case ACTIONS.ADD_BOOK:
+      if(favoriteList.some(e => e.id === action.book.id)){
+        alert('Posiadasz już ten przedmiot w ulubionych')
+        return [...favoriteList]
+      }else{
+        return [...favoriteList, action.book]
+      }
+    case ACTIONS.DELETE_BOOKS:
+      return [...favoriteList.filter((value, index)=>{
+        return action.bookIndexes.indexOf(index) == -1;
+      })]
+    default:
+      return [...favoriteList]
+  }
+}
+
 
 function App() {
   const [books, setBooks] = useState('')
@@ -21,14 +45,9 @@ function App() {
   const [errResult, setErrResult] = useState('')
   const [open, setOpen] = useState(false)
   const [iconName, setIconName] = useState(open ? 'fas fa-times' : 'fas fa-user')
-  const [favoriteList, setFavoriteList] = useState([])
-  const [bookToAdd, setBookToAdd] = useState({})
-  const [duplicate, setDuplicate] = useState(false)
-  const [testItem, setTestItem] = useState(true)
-  const [firstLoad, setFirstLoad] = useState(true)
   const [loading, setLoading] = useState(false)
-  const [indexesToDeleteDraft, setIndexesToDeleteDraft] = useState([])
-  const [indexesToDelete, setIndexesToDelete] = useState([])
+
+  const [favoriteList, dispatch] = useReducer(reducer, [])
 
   useEffect(()=>{
     if(name){
@@ -90,53 +109,7 @@ function App() {
       setIconName(open ? 'fas fa-user' : 'fas fa-times')
   }
 
-  const addFavorite = (newbook) =>{
-    favoriteList.forEach(bookid => {if(bookid.id===newbook.id){
-      setDuplicate(true)
-    }
-    })
-    setBookToAdd(newbook)
-    setTestItem(testItem => !testItem)
-  }
-
-  useEffect(()=>{
-    if(!firstLoad){
-      if(duplicate){
-        alert("Posiadasz już ten przedmiot w ulubionych")
-      }else{
-        setFavoriteList(prevFavoriteList => [...prevFavoriteList, bookToAdd])
-      }
-      setDuplicate(false)
-    }
-    setFirstLoad(false)
-  },[testItem])
-
-
-  const deleteBooks = (bookToDelete) =>{
-    favoriteList.forEach((favorite, index)=>{
-      bookToDelete.forEach(bookId => {
-        if(favorite.id == bookId){
-          console.log("powinno się wyświetlić po przyrównaniu")
-          setIndexesToDeleteDraft(indexesToDeleteDraft => [...indexesToDeleteDraft, index])
-        }
-      })
-    })
-  }
-
-  useEffect(()=>{
-    if(indexesToDeleteDraft.length > 0){
-      setIndexesToDelete(indexesToDeleteDraft)
-    }
-  }, [indexesToDeleteDraft])
-
-  useEffect(()=>{
-    if(indexesToDelete.length > 0){
-      setFavoriteList(favoriteList => favoriteList.filter((value, index)=>{
-        return indexesToDelete.indexOf(index) == -1
-      }))
-      setIndexesToDeleteDraft([])
-    }
-  }, [indexesToDelete])
+  
 
 
   if(loading){
@@ -148,23 +121,23 @@ function App() {
   
   return (
     <div className="App" >
-      
       <Router>
         <div>
-        <UserPanel toggleOpen={()=>toggleOpen()} open={open} iconName={iconName} setOpen={setOpen} favoriteList={favoriteList}  deleteBooks={deleteBooks}/>
+        <UserPanel toggleOpen={()=>toggleOpen()} open={open} iconName={iconName} setOpen={setOpen} favoriteList={favoriteList} dispatch={dispatch}/>
           {/* Na github przy Home muszę dać link do /bookSearchingEngine */}
           <Route exact path="/">
-            <Main updateDraft={updateDraft} draft={draft} search={search} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult} errDraft={errDraft} searched={searched} addFavorite={addFavorite}/>
+            <Main updateDraft={updateDraft} draft={draft} search={search} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult} errDraft={errDraft} searched={searched} dispatch={dispatch}/>
           </Route>
           {/* Dla githubpages, bo tam domyślna ścieżka początkowa jest /booksSearchingEngine */}
           <Route exact path="/booksSearchingEngine">
-              <Main updateDraft={updateDraft} draft={draft} search={search} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult} errDraft={errDraft} searched={searched} addFavorite={addFavorite}/>
+              <Main updateDraft={updateDraft} draft={draft} search={search} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult} errDraft={errDraft} searched={searched} dispatch={dispatch}/>
           </Route>
           <Route path="/details/:bookId">
-              <Details addFavorite={addFavorite} />
+              <Details dispatch={dispatch}/>
           </Route>  
         </div>
       </Router>
+      
     </div>
   );
   }
