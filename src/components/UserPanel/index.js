@@ -109,6 +109,7 @@ const UserPanel = (props) =>{
     const [edit, setEdit] = useState(false)
     const [checkBookDraft, setCheckBookDraft] = useState([])
     const [checkBook, setCheckBook] = useState([])
+    const [draft, setDraft] = useState('')
     const toggleEdit = () =>{
         setEdit(edit => !edit)
         if(edit){
@@ -135,6 +136,10 @@ const UserPanel = (props) =>{
           }
       },[checkBook])
 
+      const filterBooks = (e) =>{
+        e.target.value ? setDraft(e.target.value) : setDraft('')
+      }
+
     return(
         <Container open={props.open}>
             <Menu onClick={props.toggleOpen}>
@@ -145,9 +150,30 @@ const UserPanel = (props) =>{
                 <div>
                 <Paragraph>Lista Twoich ulubionych książek:</Paragraph>
                 {edit ? <Button onClick={toggleEdit} >Usuń zaznaczone</Button> : <Button onClick={toggleEdit}>Edytuj</Button>}
+                <input placeholder="Szukaj" onChange={filterBooks}/>
                 </div>
-                
-                <ul>{props.favoriteList.map(book => {
+                <ul>
+                    {draft ?  props.favoriteList.filter(item =>{
+                        return item.title.toLowerCase().includes(draft)
+                    }).map(book=>{
+                        return <Item key={book.id}>
+                        {edit && <MyCheckBox id={book.id} className="checkFavBooks" type='checkbox'/>}
+                         <NavDetails to={`/details/${book.id}`} onClick={props.toggleOpen}>
+                             <img src={book.img} alt="błąd ładowania obrazka"/>
+                             <Title>{book.title}</Title>
+                         </NavDetails>
+                        </Item>
+                   }) : props.favoriteList.map(book=>{
+                         return <Item key={book.id}>
+                         {edit && <MyCheckBox id={book.id} className="checkFavBooks" type='checkbox'/>}
+                          <NavDetails to={`/details/${book.id}`} onClick={props.toggleOpen}>
+                              <img src={book.img} alt="błąd ładowania obrazka"/>
+                              <Title>{book.title}</Title>
+                          </NavDetails>
+                         </Item>
+                    })}
+                </ul>
+               {/*  <ul>{props.favoriteList.map(book => {
                    return <Item key={book.id}>
                        {edit && <MyCheckBox id={book.id} className="checkFavBooks" type='checkbox'/>}
                         <NavDetails to={`/details/${book.id}`} onClick={props.toggleOpen}>
@@ -155,7 +181,7 @@ const UserPanel = (props) =>{
                             <Title>{book.title}</Title>
                         </NavDetails>
                        </Item>
-                })}</ul>
+                })}</ul> */}
             </Panel>}
         </Container>
     )

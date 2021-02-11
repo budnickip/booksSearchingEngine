@@ -12,7 +12,8 @@ import Loader from './components/Loader'
 
 export const ACTIONS = {
   ADD_BOOK: 'add_book',
-  DELETE_BOOKS: 'delete_books'
+  DELETE_BOOKS: 'delete_books',
+  FILTER_BOOKS: 'filter_books'
 }
 
 function reducer(favoriteList, action){
