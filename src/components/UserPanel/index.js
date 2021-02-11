@@ -107,7 +107,6 @@ const MyCheckBox = styled.input`
 
 const UserPanel = (props) =>{
     const [edit, setEdit] = useState(false)
-    const [checkBookDraft, setCheckBookDraft] = useState([])
     const [checkBook, setCheckBook] = useState([])
     const [draft, setDraft] = useState('')
     const toggleEdit = () =>{
@@ -118,22 +117,17 @@ const UserPanel = (props) =>{
     }
     const addBooksToDelete = () =>{
         const array = document.querySelectorAll('.checkFavBooks')
-        array.forEach((item, index) => {
+        array.forEach(item => {
             if(item.checked){
-                setCheckBookDraft(checkBookDraft => [...checkBookDraft, index])
+                setCheckBook(checkBook => [...checkBook, item.id])
             }})
       }
-      useEffect(()=>{
-          if(checkBookDraft.length > 0){
-            setCheckBook(checkBookDraft)
-          }
-      },[checkBookDraft])
 
       useEffect(()=>{
-          if(checkBook.length > 0){
+        if(checkBook.length>0){
             props.dispatch({type: ACTIONS.DELETE_BOOKS, bookIndexes: checkBook})
-            setCheckBookDraft([])
-          }
+            setCheckBook([])
+        }
       },[checkBook])
 
       const filterBooks = (e) =>{

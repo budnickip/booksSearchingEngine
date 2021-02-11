@@ -26,8 +26,8 @@ function reducer(favoriteList, action){
         return [...favoriteList, action.book]
       }
     case ACTIONS.DELETE_BOOKS:
-      return [...favoriteList.filter((value, index)=>{
-        return action.bookIndexes.indexOf(index) == -1;
+      return [...favoriteList.filter(value =>{
+        return action.bookIndexes.indexOf(value.id) === -1;
       })]
     default:
       return [...favoriteList]
