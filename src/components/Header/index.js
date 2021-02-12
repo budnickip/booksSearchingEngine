@@ -25,7 +25,7 @@ const Header = (props) =>{
     return(    
     <Container>
         <Layer></Layer>
-        <Form updateDraft={props.updateDraft} draft={props.draft} search={props.search} errResult={props.errResult} updateDResult={props.updateDResult} dMaxResult={props.dMaxResult} errDraft={props.errDraft}/>
+        <Form updateDraft={props.updateDraft} draft={props.draft} search={props.search} searchEnter={props.searchEnter} errResult={props.errResult} updateDResult={props.updateDResult} dMaxResult={props.dMaxResult} errDraft={props.errDraft}/>
     </Container>)
 }
 

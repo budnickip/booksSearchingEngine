@@ -71,14 +71,25 @@ function App() {
       
   },[name, maxResult])
 
+  const searchEnter = () =>{
+    if(draft && document.querySelector('#search-input')){
+      if(draft.length === document.querySelector('#search-input').value.length){
+        setName(draft)
+        dMaxResult ? setMaxResult(dMaxResult) : setMaxResult(10)
+        setDraft('')
+        setDMaxResult('')
+        setSearched(true)
+      }
+    }
+  }
 
   const search = () =>{
     if(draft){
-      setName(draft)
-      dMaxResult ? setMaxResult(dMaxResult) : setMaxResult(10)
-      setDraft('')
-      setDMaxResult('')
-      setSearched(true)
+        setName(draft)
+        dMaxResult ? setMaxResult(dMaxResult) : setMaxResult(10)
+        setDraft('')
+        setDMaxResult('')
+        setSearched(true)
     }else{
       setErrDraft('To pole nie może być puste!')
     }
@@ -127,11 +138,11 @@ function App() {
         <UserPanel toggleOpen={()=>toggleOpen()} open={open} iconName={iconName} setOpen={setOpen} favoriteList={favoriteList} dispatch={dispatch}/>
           {/* Na github przy Home muszę dać link do /bookSearchingEngine */}
           <Route exact path="/">
-            <Main updateDraft={updateDraft} draft={draft} search={search} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult} errDraft={errDraft} searched={searched} dispatch={dispatch}/>
+            <Main updateDraft={updateDraft} draft={draft} search={search} searchEnter={searchEnter} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult} errDraft={errDraft} searched={searched} dispatch={dispatch}/>
           </Route>
           {/* Dla githubpages, bo tam domyślna ścieżka początkowa jest /booksSearchingEngine */}
           <Route exact path="/booksSearchingEngine">
-              <Main updateDraft={updateDraft} draft={draft} search={search} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult} errDraft={errDraft} searched={searched} dispatch={dispatch}/>
+              <Main updateDraft={updateDraft} draft={draft} search={search} searchEnter={searchEnter} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult} errDraft={errDraft} searched={searched} dispatch={dispatch}/>
           </Route>
           <Route path="/details/:bookId">
               <Details dispatch={dispatch}/>

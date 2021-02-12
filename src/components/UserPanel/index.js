@@ -94,7 +94,7 @@ const Button = styled.button`
     border-radius: 5px;
     transition: .3s ease-in-out;
     cursor: pointer;
-    margin-top: 10px;
+    margin: 8px 0px;
     &:hover{
         color: ${palette.lighterOrnaments};
     }
@@ -103,6 +103,30 @@ const Button = styled.button`
 const MyCheckBox = styled.input`
     width: 2em;
     height: 2em;
+`
+
+const FilterFavorite = styled.input`
+    border: none;
+    border-radius: 15px;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 1em;
+    line-height: 25px;
+    outline: none;
+    padding: 4px;
+    margin: 8px 0px;
+    &:focus{
+            -webkit-box-shadow: inset 0px 0px 3px 0px rgba(0,0,0,0.75);
+            -moz-box-shadow: inset 0px 0px 3px 0px rgba(0,0,0,0.75);
+            box-shadow: inset 0px 0px 3px 0px rgba(0,0,0,0.75);
+         }
+`
+
+const ButtonsBox = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin: 8px 0px;
 `
 
 const UserPanel = (props) =>{
@@ -141,11 +165,11 @@ const UserPanel = (props) =>{
             </Menu>
             {props.open && 
             <Panel>
-                <div>
-                <Paragraph>Lista Twoich ulubionych książek:</Paragraph>
-                {edit ? <Button onClick={toggleEdit} >Usuń zaznaczone</Button> : <Button onClick={toggleEdit}>Edytuj</Button>}
-                <input placeholder="Szukaj" onChange={filterBooks}/>
-                </div>
+                    <Paragraph>Lista Twoich ulubionych książek:</Paragraph>
+                <ButtonsBox>
+                    {edit ? <Button onClick={toggleEdit} >Usuń zaznaczone</Button> : <Button onClick={toggleEdit}>Edytuj</Button>}
+                    <FilterFavorite placeholder="Szukaj" onChange={filterBooks}/>
+                </ButtonsBox>
                 <ul>
                     {draft ?  props.favoriteList.filter(item =>{
                         return item.title.toLowerCase().includes(draft)
@@ -167,15 +191,6 @@ const UserPanel = (props) =>{
                          </Item>
                     })}
                 </ul>
-               {/*  <ul>{props.favoriteList.map(book => {
-                   return <Item key={book.id}>
-                       {edit && <MyCheckBox id={book.id} className="checkFavBooks" type='checkbox'/>}
-                        <NavDetails to={`/details/${book.id}`} onClick={props.toggleOpen}>
-                            <img src={book.img} alt="błąd ładowania obrazka"/>
-                            <Title>{book.title}</Title>
-                        </NavDetails>
-                       </Item>
-                })}</ul> */}
             </Panel>}
         </Container>
     )

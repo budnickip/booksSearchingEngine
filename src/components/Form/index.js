@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -72,12 +73,28 @@ const FormIcon = styled.div`
 `
 
 const Form = (props) =>{
+
+    useEffect(()=>{
+        
+        const sendEnter = (e) =>{
+          //console.log(`draft przed klikiem: ${props.draft}`)
+          if(e.key === 'Enter'){
+            //console.log(props.draft)
+           props.searchEnter()
+          }
+        }
+
+        window.addEventListener('keydown', sendEnter)
+        return () => {
+          document.removeEventListener('keydown', sendEnter);
+        }
+    }) 
     return(
       <Container>
         <BookSearch>
           <Paragraph>Wyszukaj książkę:</Paragraph>
           <FormIcon>
-            <InputName onChange={props.updateDraft} value={props.draft} />
+            <InputName id="search-input" onChange={props.updateDraft} value={props.draft} />
             <Icon onClick={props.search} className="fas fa-search" />
           </FormIcon>
           {props.errDraft ? props.errDraft : ''}
