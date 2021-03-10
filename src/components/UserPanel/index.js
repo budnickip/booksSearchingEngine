@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import {Link} from "react-router-dom";
 import styled from 'styled-components';
 import * as palette from '../../variables';
-import { ACTIONS } from '../../App';
+import { ACTIONS, FavoriteContext } from '../FavoriteContext'
 
 
 const Container = styled.div `
@@ -133,6 +133,8 @@ const UserPanel = (props) =>{
     const [edit, setEdit] = useState(false)
     const [checkBook, setCheckBook] = useState([])
     const [draft, setDraft] = useState('')
+    const [favoriteList, dispatch] = useContext(FavoriteContext)
+
     const toggleEdit = () =>{
         setEdit(edit => !edit)
         if(edit){
@@ -149,7 +151,7 @@ const UserPanel = (props) =>{
 
       useEffect(()=>{
         if(checkBook.length>0){
-            props.dispatch({type: ACTIONS.DELETE_BOOKS, bookIndexes: checkBook})
+            dispatch({type: ACTIONS.DELETE_BOOKS, bookIndexes: checkBook})
             setCheckBook([])
         }
       },[checkBook])
@@ -171,7 +173,7 @@ const UserPanel = (props) =>{
                     <FilterFavorite placeholder="Szukaj" onChange={filterBooks}/>
                 </ButtonsBox>
                 <ul>
-                    {draft ?  props.favoriteList.filter(item =>{
+                    {draft ?  favoriteList.filter(item =>{
                         return item.title.toLowerCase().includes(draft)
                     }).map(book=>{
                         return <Item key={book.id}>
@@ -181,7 +183,7 @@ const UserPanel = (props) =>{
                              <Title>{book.title}</Title>
                          </NavDetails>
                         </Item>
-                   }) : props.favoriteList.map(book=>{
+                   }) : favoriteList.map(book=>{
                          return <Item key={book.id}>
                          {edit && <MyCheckBox id={book.id} className="checkFavBooks" type='checkbox'/>}
                           <NavDetails to={`/details/${book.id}`} onClick={props.toggleOpen}>

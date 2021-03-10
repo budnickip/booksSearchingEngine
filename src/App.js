@@ -9,30 +9,7 @@ import Details from './components/Details'
 import Main from './components/Main'
 import UserPanel from './components/UserPanel'
 import Loader from './components/Loader'
-
-export const ACTIONS = {
-  ADD_BOOK: 'add_book',
-  DELETE_BOOKS: 'delete_books',
-  FILTER_BOOKS: 'filter_books'
-}
-
-function reducer(favoriteList, action){
-  switch(action.type){
-    case ACTIONS.ADD_BOOK:
-      if(favoriteList.some(e => e.id === action.book.id)){
-        alert('Posiadasz już ten przedmiot w ulubionych')
-        return [...favoriteList]
-      }else{
-        return [...favoriteList, action.book]
-      }
-    case ACTIONS.DELETE_BOOKS:
-      return [...favoriteList.filter(value =>{
-        return action.bookIndexes.indexOf(value.id) === -1;
-      })]
-    default:
-      return [...favoriteList]
-  }
-}
+import {FavoriteProvider} from './components/FavoriteContext'
 
 
 function App() {
@@ -47,8 +24,6 @@ function App() {
   const [open, setOpen] = useState(false)
   const [iconName, setIconName] = useState(open ? 'fas fa-times' : 'fas fa-user')
   const [loading, setLoading] = useState(false)
-
-  const [favoriteList, dispatch] = useReducer(reducer, [])
 
   useEffect(()=>{
     if(name){
@@ -132,25 +107,27 @@ function App() {
 
   
   return (
-    <div className="App" >
-      <Router>
-        <div>
-        <UserPanel toggleOpen={()=>toggleOpen()} open={open} iconName={iconName} setOpen={setOpen} favoriteList={favoriteList} dispatch={dispatch}/>
-          {/* Na github przy Home muszę dać link do /bookSearchingEngine */}
-          <Route exact path="/">
-            <Main updateDraft={updateDraft} draft={draft} search={search} searchEnter={searchEnter} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult} errDraft={errDraft} searched={searched} dispatch={dispatch}/>
-          </Route>
-          {/* Dla githubpages, bo tam domyślna ścieżka początkowa jest /booksSearchingEngine */}
-          <Route exact path="/booksSearchingEngine">
-              <Main updateDraft={updateDraft} draft={draft} search={search} searchEnter={searchEnter} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult} errDraft={errDraft} searched={searched} dispatch={dispatch}/>
-          </Route>
-          <Route path="/details/:bookId">
-              <Details dispatch={dispatch}/>
-          </Route>  
-        </div>
-      </Router>
-      
-    </div>
+    <FavoriteProvider>
+          <div className="App" >
+            <Router>
+              <div>
+              <UserPanel toggleOpen={()=>toggleOpen()} open={open} iconName={iconName} setOpen={setOpen} />
+                {/* Na github przy Home muszę dać link do /bookSearchingEngine */}
+                <Route exact path="/">
+                  <Main updateDraft={updateDraft} draft={draft} search={search} searchEnter={searchEnter} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult} errDraft={errDraft} searched={searched}/>
+                </Route>
+                {/* Dla githubpages, bo tam domyślna ścieżka początkowa jest /booksSearchingEngine */}
+                <Route exact path="/booksSearchingEngine">
+                    <Main updateDraft={updateDraft} draft={draft} search={search} searchEnter={searchEnter} books={books} errResult={errResult} updateDResult={updateDResult} dMaxResult={dMaxResult} errDraft={errDraft} searched={searched}/>
+                </Route>
+                <Route path="/details/:bookId">
+                    <Details />
+                </Route>  
+              </div>
+            </Router>
+            
+          </div>
+    </FavoriteProvider>
   );
   }
 }

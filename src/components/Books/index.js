@@ -1,7 +1,8 @@
+import { useContext } from "react";
 import {Link} from "react-router-dom"
 import styled from 'styled-components'
 import * as palette from '../../variables/index'
-import { ACTIONS } from '../../App'
+import {FavoriteContext, ACTIONS} from '../FavoriteContext'
 
 const Container = styled.div`
   display: flex;
@@ -57,6 +58,7 @@ const Icon = styled.span`
 `
 
 const Books = (props)=>{
+   const [favoriteList, dispatch] = useContext(FavoriteContext)
     return(
       <Container>
          {props.books ? props.books.map((book) => 
@@ -64,7 +66,7 @@ const Books = (props)=>{
             {book?.volumeInfo.title ? <Paragraph>{book?.volumeInfo.title}</Paragraph> : ''}
             {book?.volumeInfo.imageLinks.smallThumbnail && <Image src={book?.volumeInfo.imageLinks.smallThumbnail} alt="Błąd ładowania obrazka"/>}
             <CardFooter>
-               <Icon className="fas fa-heart" onClick={() => props.dispatch({type: ACTIONS.ADD_BOOK, book: {title: book.volumeInfo.title, img: book.volumeInfo.imageLinks.smallThumbnail, id: book.id}})}></Icon>
+               <Icon className="fas fa-heart" onClick={() => dispatch({type: ACTIONS.ADD_BOOK, book: {title: book.volumeInfo.title, img: book.volumeInfo.imageLinks.smallThumbnail, id: book.id}})}></Icon>
                {/*<Icon className= "fas fa-heart" onClick={() => props.addFavorite({title: book.volumeInfo.title, img: book.volumeInfo.imageLinks.smallThumbnail, id: book.id})}></Icon> */}
                <More to={`/details/${book.id}`}>Szczegóły</More>
             </CardFooter>

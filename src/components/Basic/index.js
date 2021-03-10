@@ -31,7 +31,7 @@ const Basic = (props) =>{
       )
     } else{
       return( 
-        <Books books={defaultBookJs} dispatch={props.dispatch}/>     
+        <Books books={defaultBookJs}/>     
     )
     }
   }
