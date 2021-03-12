@@ -1,5 +1,5 @@
 https://budnickip.github.io/booksSearchingEngine/
-React, React Hooks(useState, useEffect, useReducer, useContext), React Router(Route, Link, Switch, useRouteMatch, BrowserRouter), Styled Components, fetch Api
+React, React Hooks(useState, useEffect, useReducer), React Router(Route, Link, Switch, useRouteMatch, BrowserRouter), Styled Components, fetch Api
 
 Użytkownik może wyszukać książkę po tytule, id lub autorze, użytkownik może wprowadzić ile książek maksymalnie chce wyszukać.
 

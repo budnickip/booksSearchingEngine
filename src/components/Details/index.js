@@ -1,9 +1,9 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import {Link, useRouteMatch} from "react-router-dom";
 import styled from 'styled-components';
 import * as palette from '../../variables';
 import Loader from '../Loader'
-import { FavoriteContext, ACTIONS} from '../FavoriteContext'
+import { ACTIONS } from '../../App'
 
 const Container = styled.div`
   display: flex;
@@ -95,7 +95,6 @@ const Details = (props) =>{
     let match = useRouteMatch("/details/:bookId");
     const [searchedBook, setSearchedBook] = useState('')
     const [loading, setLoading] = useState(true);
-    const [favoriteList, dispatch] = useContext(FavoriteContext)
     useEffect(()=>{
         setLoading(true)
         fetch(`https://www.googleapis.com/books/v1/volumes?q=${match.params.bookId}`)
@@ -138,7 +137,7 @@ const Details = (props) =>{
             <More to="/booksSearchingEngine">Powrót</More>
             {/*<Icon className="fas fa-heart" onClick={() => props.addFavorite({title: searchedBook[0]?.volumeInfo.title, img: searchedBook[0]?.volumeInfo.imageLinks.smallThumbnail, id: searchedBook[0]?.id})}> Dodaj do ulubionych</Icon> */}
             {/*<Icon className="fas fa-heart" onClick={() => props.dispatch({type: ACTIONS.ADD_BOOK, book: {title: searchedBook[0]?.volumeInfo.title, img: searchedBook[0]?.volumeInfo.imageLinks.smallThumbnail, id: searchedBook[0]?.id}})}> Dodaj do ulubionych</Icon>*/}
-            <Icon className="fas fa-heart" onClick={() => dispatch({type: ACTIONS.ADD_BOOK, book: {title: searchedBook[0]?.volumeInfo.title, img: searchedBook[0]?.volumeInfo.imageLinks.smallThumbnail, id: searchedBook[0]?.id}})}> Dodaj do ulubionych</Icon>
+            <Icon className="fas fa-heart" onClick={() => props.dispatch({type: ACTIONS.ADD_BOOK, book: {title: searchedBook[0]?.volumeInfo.title, img: searchedBook[0]?.volumeInfo.imageLinks.smallThumbnail, id: searchedBook[0]?.id}})}> Dodaj do ulubionych</Icon>
           </Buttons>
         </Container>
       )
